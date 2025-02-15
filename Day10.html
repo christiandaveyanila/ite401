@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 10 Activity</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+        * {
+            font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            background-color: beige;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 30rem;
+            padding: 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1{
+            margin-bottom: 10px;
+        }
+
+        .date {
+            margin-top: 15px;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Day 10 Activity</h1>
+        <label for="city">Select a City: </label>
+        <select id="city" name="city">
+            <option value="Iloilo City">Iloilo City</option>
+            <option value="Guimaras">Guimaras</option>
+            <option value="Roxas City">Roxas</option>
+            <option value="Antique City">Antique</option>
+        </select>
+        <br><br>
+        <div class="date">
+            <label for="date">Select a Date: </label>
+            <input type="date" id="date" name="date">
+        </div>
+    </div>
+</body>
+</html>

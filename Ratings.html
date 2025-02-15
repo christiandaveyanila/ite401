@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Program</title>
+
+    <!-- React and Babel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.14.0/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.14.0/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+        * {
+            font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            text-align: center;
+            background: beige;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .score-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            font-weight: 500;
+        }
+
+        .score-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .score-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .score-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .emoji {
+            font-size: 60px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-buttons {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #dc3545;
+        }
+
+        .btn-secondary:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+function SurveyProgram() {
+    const [scores, setScores] = React.useState([]);
+    const [showModal, setShowModal] = React.useState(false);
+    const [selectedScore, setSelectedScore] = React.useState(null);
+    const [showSurveyCompleteModal, setShowSurveyCompleteModal] = React.useState(false);
+
+    const handleScoreClick = (score) => {
+        if (!scores.includes(score)) {
+            setScores((prevScores) => [...prevScores, score]);
+            setSelectedScore(score);
+        }
+    };
+
+    const handleSubmit = () => {
+        // Log the selected score, or send it to a server
+        console.log(`Submitted score: ${selectedScore}`);
+        
+        // After submission, show the modal
+        setShowSurveyCompleteModal(true);
+    };
+
+    const handleRestart = () => {
+        setScores([]);
+        setSelectedScore(null);
+        setShowSurveyCompleteModal(false);
+    };
+
+    const handleCloseSurvey = () => {
+        setShowSurveyCompleteModal(false);
+    };
+
+    const getEmoji = () => {
+        if (scores.length === 5) {
+            return "🎉"; // Confetti emoji when 5 scores are completed
+        }
+        switch (selectedScore) {
+            case 1: return "😡"; // Very Dissatisfied
+            case 2: return "😟"; // Dissatisfied
+            case 3: return "😐"; // Neutral
+            case 4: return "😊"; // Satisfied
+            case 5: return "😍"; // Very Satisfied
+            default: return "❓";
+        }
+    };
+
+    return (
+        <div className="container">
+            <h1>Telephone Company Provider Survey</h1>
+            <p>Rate your satisfaction with the service:</p>
+
+            <div className="score-buttons">
+                {[1, 2, 3, 4, 5].map((num) => (
+                    <button 
+                        key={num} 
+                        className="score-btn" 
+                        onClick={() => handleScoreClick(num)}
+                        disabled={scores.includes(num)}
+                    >
+                        {num}
+                    </button>
+                ))}
+            </div>
+
+            {selectedScore !== null && (
+                <div className="emoji">{getEmoji()}</div>
+            )}
+
+            <h2>Scores:</h2>
+            {scores.length === 0 ? (
+                <p>No scores yet.</p>
+            ) : (
+                <ul>
+                    {scores.map((score, index) => (
+                        <li key={index}>{score}</li>
+                    ))}
+                </ul>
+            )}
+
+            {selectedScore !== null && (
+                <div>
+                    <button 
+                        className="btn btn-primary" 
+                        onClick={handleSubmit}
+                    >
+                        Submit Rating
+                    </button>
+                </div>
+            )}
+
+            {showSurveyCompleteModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Survey Completed!</h3>
+                        <p>Would you like to rate again?</p>
+                        <div className="modal-buttons">
+                            <button className="btn btn-primary" onClick={handleRestart}>Yes</button>
+                            <button className="btn btn-secondary" onClick={handleCloseSurvey}>No</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+
+        ReactDOM.render(
+            <React.StrictMode>
+                <SurveyProgram />
+            </React.StrictMode>,
+            document.getElementById('root')
+        );
+    </script>
+
+</body>
+</html>
